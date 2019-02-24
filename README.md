@@ -4,4 +4,5 @@ An Open-world head-to-head tank fight with simple AI, terrain, and advanced cont
 
 
 ## Lecture List
-* BT01 Intor, Notes and Assets
+* BT01 Intro, Notes and Assets
+* BT02 Cloning Repository to SourceTree
