@@ -32,6 +32,8 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 	UTankMovementComponent* TankMovementComponent = nullptr;
 
+	virtual void BeginPlay() override;
+
 private:
 	// Sets default values for this pawn's properties
 	ATank();
