@@ -24,6 +24,11 @@ void UTankAimingComponent::BeginPlay()
 	LastFireTime = GetWorld()->GetTimeSeconds();
 }
 
+EFiringState UTankAimingComponent::GetFiringState() const
+{
+	return FiringState;
+}
+
 void UTankAimingComponent::Initialise(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet)
 {
 	Barrel = BarrelToSet;
@@ -99,7 +104,14 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	auto AimAsRotator = AimDirection.Rotation();
 	auto DeltaRotator = AimAsRotator - BarrelRotator;
 	Barrel->Elevate(DeltaRotator.Pitch); 
-	Turret->Rotate(DeltaRotator.Yaw);
+	if (FMath::Abs(DeltaRotator.Yaw) > 180)
+	{
+		Turret->Rotate(-(360 - DeltaRotator.Yaw));
+	}
+	else
+	{
+		Turret->Rotate(DeltaRotator.Yaw);
+	}
 }
 
 void UTankAimingComponent::Fire()

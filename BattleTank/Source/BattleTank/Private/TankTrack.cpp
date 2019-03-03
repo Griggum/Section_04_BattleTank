@@ -16,16 +16,16 @@ void UTankTrack::BeginPlay()
 
 void UTankTrack::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
 {
-	UE_LOG(LogTemp, Warning, TEXT("I'm hit, I'm hit!"))
+	DriveTrack();
+	ApplySidewaysForce();
+	CurrentThrottle = 0;
 }
 
-void UTankTrack::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction)
+void UTankTrack::ApplySidewaysForce()
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	
-	auto SlippageSpeed = FVector::DotProduct(GetRightVector(), GetComponentVelocity());
-
 	// Wrok-out the required acceleration this fram to correct
+	auto SlippageSpeed = FVector::DotProduct(GetRightVector(), GetComponentVelocity());
+	auto DeltaTime = GetWorld()->GetDeltaSeconds();
 	auto CorrectionAcceleration = -SlippageSpeed / DeltaTime * GetRightVector();
 
 	// Calculate and apply sideways force (F=ma)
@@ -36,10 +36,13 @@ void UTankTrack::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompo
 
 void UTankTrack::SetThrottle(float Throttle)
 {
-	auto ForceApplied = GetForwardVector() * Throttle * TrackMaxDrivingForce;
+	CurrentThrottle = FMath::Clamp<float>(CurrentThrottle + Throttle, -1, 1);
+}
+
+void UTankTrack::DriveTrack()
+{
+	auto ForceApplied = GetForwardVector() * CurrentThrottle * TrackMaxDrivingForce;
 	auto ForceLocation = GetComponentLocation();
 	auto TankRoot = Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent());
 	TankRoot->AddForceAtLocation(ForceApplied, ForceLocation);
 }
-
-

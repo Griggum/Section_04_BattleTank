@@ -39,8 +39,9 @@ public:
 
 	virtual void BeginPlay() override;
 
-protected:
+	EFiringState GetFiringState() const;
 
+protected:
 	UPROPERTY(BlueprintReadOnly, Category = "State")
 	EFiringState FiringState = EFiringState::Reloading;
 
