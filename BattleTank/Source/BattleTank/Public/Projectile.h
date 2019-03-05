@@ -8,7 +8,8 @@
 
 // Forward Declarations
 class UProjectileMovementComponent;
-
+class UStaticMeshComponent;
+class UParticleSystemComponent;
 
 UCLASS()
 class BATTLETANK_API AProjectile : public AActor
@@ -33,4 +34,9 @@ private:
 
 	UProjectileMovementComponent* ProjectileMovementComponent = nullptr;
 	
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	UStaticMeshComponent* CollisionMesh = nullptr;
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	UParticleSystemComponent* LaunchBlast = nullptr;
 };

@@ -64,7 +64,7 @@ bool UTankAimingComponent::IsBarrelMoving()
 	return !BarrelForward.Equals(AimDirection,0.01);// vectors are equal
 }
 
-uint8 UTankAimingComponent::GetRoundsLeft() const
+int32 UTankAimingComponent::GetRoundsLeft() const
 {
 	return RoundsLeft;
 }
@@ -115,7 +115,7 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	Barrel->Elevate(DeltaRotator.Pitch); 
 	if (FMath::Abs(DeltaRotator.Yaw) > 180)
 	{
-		Turret->Rotate(-(360 - DeltaRotator.Yaw));
+		Turret->Rotate(- DeltaRotator.Yaw);
 	}
 	else
 	{
